@@ -1,7 +1,6 @@
 import java.rmi.*;
 
 public interface ServerInterface extends Remote {
-    // public int sum(int a, int b) throws RemoteException;
 
     public int addGraph(String id, int n) throws RemoteException;
 

@@ -8,7 +8,7 @@ public class Action extends UnicastRemoteObject implements ServerInterface {
 	Action() throws RemoteException {
 		super();
 	}
-	
+
 	public int addGraph(String id, int n) {
 		// Check and put
 		if (this.graphBook.containsKey(id)) {

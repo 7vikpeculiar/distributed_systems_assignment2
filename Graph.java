@@ -107,6 +107,7 @@ public class Graph {
             // System.out.println("Case 1");
             this.MST_wt = -1;
             this.unchanged = true;
+            this.MST_processing = false;
             return -1;
         }
         int total_weight = 0;
@@ -136,6 +137,7 @@ public class Graph {
         if (picked_edges < this.vertices - 1) {
             this.MST_wt = -1;
             this.unchanged = true;
+            this.MST_processing = false;
             return -1;
         }
 
