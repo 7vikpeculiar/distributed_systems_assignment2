@@ -8,11 +8,7 @@ public class Action extends UnicastRemoteObject implements ServerInterface {
 	Action() throws RemoteException {
 		super();
 	}
-
-	public int sum(int a, int b) {
-		return a + b;
-	}
-
+	
 	public int addGraph(String id, int n) {
 		// Check and put
 		if (this.graphBook.containsKey(id)) {
@@ -35,13 +31,9 @@ public class Action extends UnicastRemoteObject implements ServerInterface {
 	}
 
 	public int print(String id) {
-		System.out.println("Graph : "+ id);
+		System.out.println("Graph : " + id);
 		this.graphBook.get(id).print();
 		return 0;
 	}
-
-	// public int print(){
-		// for()
-	// }
 
 }

@@ -11,7 +11,7 @@ public class Graph {
         }
 
         public void print() {
-            System.out.println(Integer.toString(this.src) + " -> " + Integer.toString(this.dest) + " -> "
+            System.out.println(Integer.toString(this.src) + " -> " + Integer.toString(this.dest) + " : "
                     + Integer.toString(this.weight));
         }
 
@@ -27,12 +27,12 @@ public class Graph {
     String id;
     int edges = 0;
     int vertices;
-<<<<<<< HEAD
     int parent[];
     int rank[];
-=======
     boolean processing;
->>>>>>> f6f711389bb0448aed7e6498070eb1d52dc4082e
+    int MST_wt = -1;
+    boolean unchanged = false;
+    boolean MST_processing = false;
 
     Graph(int nodes_count) {
         this.vertices = nodes_count;
@@ -43,7 +43,6 @@ public class Graph {
 
     public void addEdge(int src, int dest, int weight) {
         while (this.processing == true) {
-
         }
         this.processing = true;
         System.out.println("Add Edge");
@@ -57,6 +56,7 @@ public class Graph {
         }
         // this.EdgeList.add(new_edgfinde);
         this.edges++;
+        this.unchanged = false;
         this.processing = false;
     }
 
@@ -70,11 +70,13 @@ public class Graph {
 
     public int find(int node) {
         // int initial_node = node;
-        if(node != this.parent[node]) {
+        // If node == parent or parent == parent's parent
+        if (this.parent[this.parent[node]] == this.parent[node]) {
+            return this.parent[node];
+        } else {
             this.parent[node] = find(this.parent[node]);
         }
-        // this.parent[initial_node] = node;
-        return node;
+        return this.parent[node];
     }
 
     public void union(int node1, int node2) {
@@ -92,8 +94,21 @@ public class Graph {
 
     public int MST() {
         // Already sorted
-        try{
-        System.out.println("MST Started");
+        // System.out.println("MST Started");
+        while (this.MST_processing == true) {
+        }
+        this.MST_processing = true;
+        if (unchanged) {
+            System.out.println("Unchanged");
+            return this.MST_wt;
+        }
+        if (this.edges < this.vertices - 1) {
+            // MST not possible
+            // System.out.println("Case 1");
+            this.MST_wt = -1;
+            this.unchanged = true;
+            return -1;
+        }
         int total_weight = 0;
         this.parent = new int[this.vertices];
         this.rank = new int[this.vertices];
@@ -101,9 +116,10 @@ public class Graph {
             this.parent[i] = i;
         }
         int i = 0, picked_edges = 0;
+
         while (picked_edges < this.vertices - 1) {
             // j++;
-            System.out.println("i->"+String.valueOf(i));
+            // System.out.println("i -> " + String.valueOf(i));
             Edge edge_under_consideration = this.EdgeList.get(i);
             i++;
             int src_parent = find(edge_under_consideration.src);
@@ -113,18 +129,20 @@ public class Graph {
                 union(edge_under_consideration.src, edge_under_consideration.dest);
                 picked_edges++;
             }
+            if (i >= this.edges) {
+                break;
+            }
         }
-        return total_weight;}
-        catch (Exception e) 
-        { 
-            // printStackTrace method 
-            // prints line numbers + call stack 
-            e.printStackTrace(); 
-              
-            // Prints what exception has been thrown 
-            System.out.println(e); 
-            return 0;
-        } 
+        if (picked_edges < this.vertices - 1) {
+            this.MST_wt = -1;
+            this.unchanged = true;
+            return -1;
+        }
+
+        this.MST_wt = total_weight;
+        this.unchanged = true;
+        this.MST_processing = false;
+        return total_weight;
     }
 
 }
