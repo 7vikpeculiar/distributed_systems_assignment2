@@ -27,6 +27,8 @@ public class Graph {
     String id;
     int edges = 0;
     int vertices;
+    int parent[];
+    int rank[];
 
     Graph(int nodes_count) {
         this.vertices = nodes_count;
@@ -45,7 +47,7 @@ public class Graph {
         } else {
             this.EdgeList.add(index, new_edge);
         }
-        // this.EdgeList.add(new_edge);
+        // this.EdgeList.add(new_edgfinde);
         this.edges++;
     }
 
@@ -55,6 +57,65 @@ public class Graph {
         for (int i = 0; i < edges; i++) {
             this.EdgeList.get(i).print();
         }
+    }
+
+    public int find(int node) {
+        // int initial_node = node;
+        if(node != this.parent[node]) {
+            this.parent[node] = find(this.parent[node]);
+        }
+        // this.parent[initial_node] = node;
+        return node;
+    }
+
+    public void union(int node1, int node2) {
+        int node1_parent = find(node1);
+        int node2_parent = find(node2);
+        if (this.rank[node1_parent] < this.rank[node2_parent]) {
+            this.parent[node1_parent] = node2_parent;
+        } else if (this.rank[node1_parent] > this.rank[node2_parent]) {
+            this.parent[node2_parent] = node1_parent;
+        } else {
+            this.parent[node1_parent] = node2_parent;
+            this.rank[node1_parent]++;
+        }
+    }
+
+    public int MST() {
+        // Already sorted
+        try{
+        System.out.println("MST Started");
+        int total_weight = 0;
+        this.parent = new int[this.vertices];
+        this.rank = new int[this.vertices];
+        for (int i = 0; i < this.vertices; i++) {
+            this.parent[i] = i;
+        }
+        int i = 0, picked_edges = 0;
+        while (picked_edges < this.vertices - 1) {
+            // j++;
+            System.out.println("i->"+String.valueOf(i));
+            Edge edge_under_consideration = this.EdgeList.get(i);
+            i++;
+            int src_parent = find(edge_under_consideration.src);
+            int dest_parent = find(edge_under_consideration.dest);
+            if (src_parent != dest_parent) {
+                total_weight += edge_under_consideration.weight;
+                union(edge_under_consideration.src, edge_under_consideration.dest);
+                picked_edges++;
+            }
+        }
+        return total_weight;}
+        catch (Exception e) 
+        { 
+            // printStackTrace method 
+            // prints line numbers + call stack 
+            e.printStackTrace(); 
+              
+            // Prints what exception has been thrown 
+            System.out.println(e); 
+            return 0;
+        } 
     }
 
 }

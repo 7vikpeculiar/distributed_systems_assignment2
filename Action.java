@@ -31,7 +31,7 @@ public class Action extends UnicastRemoteObject implements ServerInterface {
 	};
 
 	public int getMST(String id) {
-		return 0;
+		return this.graphBook.get(id).MST();
 	}
 
 	public int print(String id) {
