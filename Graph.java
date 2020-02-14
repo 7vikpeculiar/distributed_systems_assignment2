@@ -27,19 +27,24 @@ public class Graph {
     String id;
     int edges = 0;
     int vertices;
+    boolean processing;
 
     Graph(int nodes_count) {
         this.vertices = nodes_count;
+        this.processing = false;
     }
 
     List<Edge> EdgeList = new ArrayList<Edge>();
 
     public void addEdge(int src, int dest, int weight) {
+        while (this.processing == true) {
+
+        }
+        this.processing = true;
         System.out.println("Add Edge");
         Edge new_edge = new Edge(src, dest, weight);
         int index = Collections.binarySearch(this.EdgeList, new_edge);
-        System.out.println("Index is :");
-        System.out.println(index);
+        System.out.println("Index is :" + String.valueOf(index));
         if (index < 0) {
             this.EdgeList.add(Math.abs(index) - 1, new_edge);
         } else {
@@ -47,6 +52,7 @@ public class Graph {
         }
         // this.EdgeList.add(new_edge);
         this.edges++;
+        this.processing = false;
     }
 
     public void print() {
@@ -55,6 +61,11 @@ public class Graph {
         for (int i = 0; i < edges; i++) {
             this.EdgeList.get(i).print();
         }
+    }
+
+    public int getMST()
+    {
+        
     }
 
 }
