@@ -35,6 +35,7 @@ public class Action extends UnicastRemoteObject implements ServerInterface {
 	}
 
 	public int print(String id) {
+		System.out.println("Graph : "+ id);
 		this.graphBook.get(id).print();
 		return 0;
 	}
